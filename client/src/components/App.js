@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Beers from './Beers';
 import NoMatch from './NoMatch';
 import NavBar from './NavBar';
 import Flash from './Flash';
@@ -14,6 +15,7 @@ class App extends Component {
         <Flash />
         <Switch>
           <Route exact path='/' component={Home} />
+          <Route exact path='/beers' component={Beers} />
           <Route component={NoMatch} />
         </Switch>
       </Segment>
