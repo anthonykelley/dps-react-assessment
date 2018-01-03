@@ -1,13 +1,13 @@
 import React from 'react';
 import axios from 'axios';
-import { Grid, List } from 'semantic-ui-react';
+import { Grid, List, Container } from 'semantic-ui-react';
 import Breweries from './Breweries';
 
 class Beers extends React.Component {
   state = { beers: [], };
   
   componentDidMount() {
-    axios.get('/api/all_beers')
+    axios.get('/api/all_beers?page=1&per_page=5')
       .then( res => {
         const beers = res.data;
         console.log(beers.entries);
@@ -17,11 +17,12 @@ class Beers extends React.Component {
 
   render() {
     return(
-      <div style={styles}>
+      <Container style={styles}>
+      <div>
         <Grid>
           <Grid.Row>
-            <Grid.Column width={8}>
-              <h1>Beers</h1>
+            <Grid.Column width={8} style={grid}>
+              <h1 className='center'>Beers</h1>
               <List bulleted>
                 {Object.keys(this.state.beers).map((key) => (
                   <div>
@@ -30,7 +31,7 @@ class Beers extends React.Component {
                 ))}
               </List>
             </Grid.Column>
-            <Grid.Column width={8}>
+            <Grid.Column width={8} style={grid}>
               <h1>Breweries</h1>
               <List bulleted>
                 <Breweries />
@@ -39,12 +40,18 @@ class Beers extends React.Component {
           </Grid.Row>
         </Grid>
       </div>
+      </Container>
     )
   }
 }
 
 const styles = {
-  color: 'white',
+  backgroundColor: 'white',
+  marginTop: '45px',
+}
+
+const grid = {
+  textAlign: 'center',
 }
 
 export default Beers;
