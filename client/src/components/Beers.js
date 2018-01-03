@@ -7,7 +7,7 @@ class Beers extends React.Component {
   state = { beers: [], };
   
   componentDidMount() {
-    axios.get('/api/all_beers?page=1&per_page=5')
+    axios.get('/api/all_beers')
       .then( res => {
         const beers = res.data;
         console.log(beers.entries);
