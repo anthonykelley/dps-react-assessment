@@ -1,57 +1,55 @@
 import React from 'react';
 import axios from 'axios';
-import { Grid, List, Container } from 'semantic-ui-react';
+import { Grid, List, Container, Card, Image, Button, } from 'semantic-ui-react';
 import Breweries from './Breweries';
 
 class Beers extends React.Component {
-  state = { beers: [], };
-  
+  state = { beers: [], info: [] };
+
   componentDidMount() {
     axios.get('/api/all_beers')
       .then( res => {
-        const beers = res.data;
-        console.log(beers.entries);
-        this.setState({beers: beers.entries});
+        this.setState({ info: res.data, beers: res.data.entries});
       })
     }
+
+  displayBeers = () => {
+    return this.state.beers.map( (beer, i) => {
+        return(
+        <Card key={i}>
+          <Card.Content>
+            <Card.Header>
+              {beer.name}
+            </Card.Header>
+            <Card.Description>
+              Style: {beer.style.category.name}
+            </Card.Description>
+          </Card.Content>
+          <Card.Content extra>
+            <div className='ui two buttons'>
+              <Button basic color='blue'>View</Button>
+            </div>
+          </Card.Content>
+        </Card>
+        )
+    } )
+  }
 
   render() {
     return(
       <Container style={styles}>
-      <div>
-        <Grid>
-          <Grid.Row>
-            <Grid.Column width={8} style={grid}>
-              <h1 className='center'>Beers</h1>
-              <List bulleted>
-                {Object.keys(this.state.beers).map((key) => (
-                  <div>
-                    <span>{this.state.beers[key].name}</span>
-                  </div>
-                ))}
-              </List>
-            </Grid.Column>
-            <Grid.Column width={8} style={grid}>
-              <h1>Breweries</h1>
-              <List bulleted>
-                <Breweries />
-              </List>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
+        <Card.Group>
+          {this.displayBeers()}
+        </Card.Group>
       </Container>
-    )
+      )
+    }
   }
-}
 
-const styles = {
-  backgroundColor: 'white',
-  marginTop: '45px',
-}
-
-const grid = {
-  textAlign: 'center',
-}
+  const styles = {
+    backgroundColor: 'white',
+    marginTop: '45px',
+    width: '80%',
+  }
 
 export default Beers;

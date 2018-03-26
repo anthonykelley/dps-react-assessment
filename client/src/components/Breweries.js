@@ -3,25 +3,29 @@ import axios from 'axios';
 import { Grid, List } from 'semantic-ui-react';
 
 class Breweries extends React.Component {
-  state = { breweries: [], };
-  
+  state = { breweries: [], info: [] };
+
   componentDidMount() {
     axios.get('/api/all_breweries')
       .then( res => {
-        const breweries = res.data;
-        console.log(breweries.entries);
-        this.setState({breweries: breweries.entries});
+        this.setState({info: res.data, breweries: res.data.entries});
       })
     }
+
+  displayBreweries = () => {
+    return this.state.breweries.map( (brew, i) => {
+      return(
+      <div key={i}>
+        <span>{brew.name}</span>
+      </div>
+      )
+    } )
+  }
 
   render() {
     return(
       <div>
-        {Object.keys(this.state.breweries).map((key) => (
-          <div>
-            <span>{this.state.breweries[key].name}</span>
-          </div>
-        ))}
+        {this.displayBreweries()}
       </div>
     )
   }
