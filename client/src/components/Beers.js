@@ -1,16 +1,17 @@
 import React from 'react';
 import axios from 'axios';
 import { Grid, List, Container, Card, Image, Button, } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import Breweries from './Breweries';
 import InfiniteScroll from 'react-infinite-scroller';
 
 class Beers extends React.Component {
-  state = { beers: [], info: [], page: 1, totalPages: 0 };
+  state = { beers: [], page: 1, totalPages: 0 };
 
   componentDidMount() {
     axios.get('/api/all_beers')
       .then( res => {
-        this.setState({ info: res.data, beers: res.data.entries, totalPages: res.data.total_pages});
+        this.setState({ beers: res.data.entries, totalPages: res.data.total_pages});
       })
     }
 
@@ -39,7 +40,9 @@ class Beers extends React.Component {
           </Card.Content>
           <Card.Content extra>
             <div className='ui two buttons'>
-              <Button basic color='blue'>View</Button>
+              <Link to={`/api/search_beers?query=${beer.name}`}>
+                <Button basic color='blue'>View</Button>
+              </Link>
             </div>
           </Card.Content>
         </Card>
@@ -50,7 +53,7 @@ class Beers extends React.Component {
   render() {
     return(
       <Container style={styles}>
-        <h1>Beer List</h1>
+        <h1 style={{textAlign: 'center'}}>Beer List</h1>
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadMore}
